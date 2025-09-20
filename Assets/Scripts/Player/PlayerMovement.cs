@@ -5,18 +5,18 @@ public class PlayerMovement : MonoBehaviour
     [Header("Camera")]
     public Transform cameraRoot;
     public float sensitivity = 2;
-    
+
     [Header("Movement")]
     public float movementSpeed = 5f;
     public float sprintSpeed = 8f;
     public float jumpForce = 10f;
     public float gravity = -9.81f;
-    
+
     [Header("Ground Check")]
     public float groundCheckRadius = 0.5f;
     public float groundCheckDistance = 0.1f;
     public LayerMask groundLayerMask = 1;
-    
+
     private Rigidbody rb;
     private bool isGrounded;
     private bool mouseLookEnabled = true;
@@ -41,9 +41,9 @@ public class PlayerMovement : MonoBehaviour
     {
         Movement();
         GroundCheck();
-        
+
         // Set rigidbody velocity at the very end after all calculations
-        rb.linearVelocity = velocity;
+        rb.velocity = velocity;
     }
 
     private void CursorToggling()
@@ -75,7 +75,7 @@ public class PlayerMovement : MonoBehaviour
     private void SetMouseLook(bool enabled)
     {
         mouseLookEnabled = enabled;
-        
+
         if (enabled)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -104,14 +104,14 @@ public class PlayerMovement : MonoBehaviour
         Vector3 origin = transform.position;
         isGrounded = false;
         float highestGroundY = float.MinValue;
-        
+
         // Cast multiple rays in a circle around the player
         int rayCount = 8;
         for (int i = 0; i < rayCount; i++)
         {
             float angle = (360f / rayCount) * i;
             Vector3 rayOrigin = origin + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), groundCheckDistance, Mathf.Sin(angle * Mathf.Deg2Rad));
-            
+
             RaycastHit hit;
             if (Physics.Raycast(rayOrigin, Vector3.down, out hit, groundCheckDistance * 2, groundLayerMask, QueryTriggerInteraction.Ignore))
             {
@@ -122,7 +122,7 @@ public class PlayerMovement : MonoBehaviour
                 }
             }
         }
-        
+
         // Additional center ray for more precise ground detection
         Vector3 centerRayOrigin = origin + Vector3.up * groundCheckDistance;
         RaycastHit centerHit;
@@ -134,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
                 highestGroundY = centerHit.point.y;
             }
         }
-        
+
         // Set player height to the highest grounded point found
         if (isGrounded && highestGroundY > float.MinValue)
         {
@@ -147,18 +147,18 @@ public class PlayerMovement : MonoBehaviour
     private void Movement()
     {
         Vector2 keyboardInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        
+
         // Calculate movement direction
         Vector3 moveDirection = (transform.forward * keyboardInput.y + transform.right * keyboardInput.x).normalized;
-        
+
         // Check for sprint input
         float currentSpeed = Input.GetKey(KeyCode.LeftShift) ? sprintSpeed : movementSpeed;
-        
+
         // Apply horizontal movement
         Vector3 horizontalVelocity = moveDirection * currentSpeed;
         velocity.x = horizontalVelocity.x;
         velocity.z = horizontalVelocity.z;
-        
+
         // Apply gravity
         if (isGrounded)
         {
