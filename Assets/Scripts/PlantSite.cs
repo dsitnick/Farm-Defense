@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Collections;
 
-public class PlantSite : MonoBehaviour
-{
+public class PlantSite : MonoBehaviour {
     [Header("Plant Site Settings")]
     public float wateringCooldown = 5f;
 
@@ -11,7 +10,7 @@ public class PlantSite : MonoBehaviour
     public UnityEvent OnPlant;
     public UnityEvent OnWater;
 
-    private PlantData currentPlant;
+    public PlantData currentPlant { get; private set; }
     private bool isWatered = false;
     private GameObject currentPlantObject;
     private float lastWateredTime = 0f;
@@ -21,15 +20,12 @@ public class PlantSite : MonoBehaviour
 
     public bool hasPlant => currentPlant != null;
 
-    public void Plant(PlantData plantData)
-    {
-        if (currentPlant == null && plantData != null)
-        {
+    public void Plant(PlantData plantData) {
+        if (currentPlant == null && plantData != null) {
             currentPlant = plantData;
 
             // Instantiate the plant prefab as a child
-            if (plantData.prefab != null)
-            {
+            if (plantData.prefab != null) {
                 currentPlantObject = Instantiate(plantData.prefab, transform.position, transform.rotation, transform);
                 plantAnimator = currentPlantObject.GetComponent<Animator>();
                 isFullyGrown = false;
@@ -43,10 +39,8 @@ public class PlantSite : MonoBehaviour
         }
     }
 
-    public void Water()
-    {
-        if (currentPlant != null && (Time.time - lastWateredTime >= wateringCooldown))
-        {
+    public void Water() {
+        if (currentPlant != null && (Time.time - lastWateredTime >= wateringCooldown)) {
             isWatered = true;
             lastWateredTime = Time.time;
 
@@ -58,16 +52,13 @@ public class PlantSite : MonoBehaviour
     }
 
 
-    public void Harvest()
-    {
-        if (currentPlant != null && isFullyGrown)
-        {
+    public void Harvest() {
+        if (currentPlant != null && isFullyGrown) {
             // TODO: Add harvest logic (spawn items, add to inventory, etc.)
             Debug.Log($"Harvested {currentPlant.name} at {transform.position}");
 
             // Trigger harvest animation
-            if (plantAnimator != null)
-            {
+            if (plantAnimator != null) {
                 plantAnimator.SetTrigger("Harvest");
             }
 
@@ -82,25 +73,21 @@ public class PlantSite : MonoBehaviour
             StartCoroutine(DestroyPlantAfterDelay(0.5f));
         }
     }
-    
-    private IEnumerator DestroyPlantAfterDelay(float delay)
-    {
+
+    private IEnumerator DestroyPlantAfterDelay(float delay) {
         yield return new WaitForSeconds(delay);
-        if (currentPlantObject != null)
-        {
+        if (currentPlantObject != null) {
             Destroy(currentPlantObject);
             currentPlantObject = null;
         }
     }
-    
-    public void Clear()
-    {
+
+    public void Clear() {
         // Remove the plant model
-        if (currentPlantObject != null)
-        {
+        if (currentPlantObject != null) {
             Destroy(currentPlantObject);
         }
-        
+
         // Reset all plant-related variables to original state
         currentPlant = null;
         currentPlantObject = null;
@@ -110,18 +97,14 @@ public class PlantSite : MonoBehaviour
         currentGrowth = 0f;
     }
 
-    void Update()
-    {
-        if (currentPlant != null && plantAnimator != null && !isFullyGrown)
-        {
+    void Update() {
+        if (currentPlant != null && plantAnimator != null && !isFullyGrown) {
             // Only grow when watered
-            if (isWatered)
-            {
+            if (isWatered) {
                 float growthSpeed = 1f / currentPlant.growTime;
                 currentGrowth += growthSpeed * Time.deltaTime;
 
-                if (currentGrowth >= 1f)
-                {
+                if (currentGrowth >= 1f) {
                     isFullyGrown = true;
                     plantAnimator.SetBool("Fully Grown", true);
                 }

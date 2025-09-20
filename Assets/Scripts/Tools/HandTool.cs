@@ -56,6 +56,8 @@ public class HandTool : Tool
         // Harvest from closest site
         if (closestPlantSite != null)
         {
+            var plant = closestPlantSite.currentPlant;
+            GetComponentInParent<PlayerInventory>().AddItem(plant.fruitItem, plant.fruitCount);
             closestPlantSite.Harvest();
         }
     }

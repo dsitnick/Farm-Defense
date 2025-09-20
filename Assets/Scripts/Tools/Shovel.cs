@@ -3,8 +3,8 @@ using UnityEngine;
 public class Shovel : Tool
 {
     [Header("Dig Settings")]
-    public GameObject digIndicator;
-    public GameObject invalidIndicator;
+    public GameObject digIndicatorPrefab;
+    public GameObject invalidIndicatorPrefab;
     public GameObject plantSitePrefab;
     public float maxDigDistance = 5f;
     public LayerMask groundLayerMask = 1;
@@ -14,9 +14,12 @@ public class Shovel : Tool
     private Vector3 currentDigPosition;
     private PlayerTools playerTools;
 
-    void Awake()
-    {
+    private GameObject invalidIndicator, digIndicator;
+
+    void Awake() {
         playerTools = GetComponentInParent<PlayerTools>();
+        digIndicator = Instantiate(digIndicatorPrefab, playerTools.transform);
+        invalidIndicator = Instantiate(invalidIndicatorPrefab, playerTools.transform);
     }
 
     public override void SetActive(bool active) {

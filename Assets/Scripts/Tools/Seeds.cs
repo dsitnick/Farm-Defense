@@ -4,6 +4,7 @@ public class Seeds : Tool
 {
     [Header("Seeds Settings")]
     public PlantData plantData;
+    public InventoryItem requiredItem;
     public float interactionRadius = 2f;
     public float maxRange = 5f;
     public LayerMask plantSiteLayer = 1;
@@ -53,10 +54,12 @@ public class Seeds : Tool
             }
         }
 
+        var inventory = playerTools.GetComponent<PlayerInventory>();
+
         // Plant seed at closest site
-        if (closestPlantSite != null)
-        {
+        if (closestPlantSite != null && inventory.HasItem(requiredItem)) {
             closestPlantSite.Plant(plantData);
+            inventory.RemoveItem(requiredItem);
         }
     }
 }

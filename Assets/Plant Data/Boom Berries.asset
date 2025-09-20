@@ -15,5 +15,5 @@ MonoBehaviour:
   prefab: {fileID: 812036932640596737, guid: e3470a5289ed0e94bb9253b836fdbae1, type: 3}
   growTime: 10
   waterDuration: 5
-  fruitItem: {fileID: 0}
-  fruitCount: 1
+  fruitItem: {fileID: 11400000, guid: b2b28d2633a464143862557f3b5dd2b5, type: 2}
+  fruitCount: 3

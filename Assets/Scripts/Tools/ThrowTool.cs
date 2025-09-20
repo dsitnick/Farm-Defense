@@ -4,6 +4,7 @@ using UnityEngine;
 public class ThrowTool : Tool {
 
     public GameObject prefab;
+    public InventoryItem requiredItem;
 
     public float delay = 0.2f, endlag = 0.8f;
     private PlayerTools playerTools;
@@ -19,9 +20,10 @@ public class ThrowTool : Tool {
 
     public override void UpdateTool() {
 
-        if (Input.GetMouseButtonDown(0) && !isThrowing) {
+        if (Input.GetMouseButtonDown(0) && !isThrowing && playerTools.GetComponent<PlayerInventory>().HasItem(requiredItem)) {
 
             isThrowing = true;
+            playerTools.GetComponent<PlayerInventory>().RemoveItem(requiredItem);
             StartCoroutine(Throw());
         }
     }
