@@ -1,13 +1,16 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerTools : MonoBehaviour {
-    public Tool[] tools = new Tool[9];
+    public Tool[] tools = new Tool[8];
     public HandTool handTool;
 
     public Transform cameraRoot, toolRoot;
 
     public int currentToolIndex { get; private set; } = 0;
     public Tool currentTool { get; private set; }
+
+    public UnityEvent<int> onSetActiveTool;
 
     void Start() {
         // Activate the first tool by default
@@ -23,7 +26,7 @@ public class PlayerTools : MonoBehaviour {
 
     private void HandleToolbarInput() {
         // Check for number keys 1-9
-        for (int i = 1; i <= 9; i++) {
+        for (int i = 1; i <= tools.Length; i++) {
             if (Input.GetKeyDown(KeyCode.Alpha0 + i)) {
                 int toolIndex = i - 1; // Convert to 0-based index
                 if (toolIndex < tools.Length) {
@@ -49,6 +52,8 @@ public class PlayerTools : MonoBehaviour {
 
         // Activate new tool
         currentTool?.SetActive(true);
+
+        onSetActiveTool.Invoke(toolIndex);
     }
 
     public void RemoveTool(int toolIndex) {
@@ -59,11 +64,11 @@ public class PlayerTools : MonoBehaviour {
     }
 
     public void SetTool(int toolIndex, GameObject prefab) {
-        if (tools[toolIndex - 1] != null) {
+        if (tools[toolIndex] != null) {
             RemoveTool(toolIndex);
         }
 
-        tools[toolIndex - 1] = Instantiate(prefab, toolRoot).GetComponent<Tool>();
+        tools[toolIndex] = prefab == null ? null : Instantiate(prefab, toolRoot).GetComponent<Tool>();
 
         if (toolIndex == currentToolIndex) {
             SetActiveTool(toolIndex);

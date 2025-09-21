@@ -1,7 +1,9 @@
 using UnityEngine;
 
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
+
+    public static bool MOVEMENT_DISABLED = false;
+
     [Header("Camera")]
     public Transform cameraRoot;
     public float sensitivity = 2;
@@ -19,26 +21,20 @@ public class PlayerMovement : MonoBehaviour
 
     private Rigidbody rb;
     private bool isGrounded;
-    private bool mouseLookEnabled = true;
     private Vector3 velocity;
     Vector2 mouseInput;
 
-    void Awake()
-    {
+    void Awake() {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
-        SetMouseLook(true);
     }
 
-    void Update()
-    {
-        CursorToggling();
+    void Update() {
         MouseLook();
         JumpInput();
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         Movement();
         GroundCheck();
 
@@ -46,22 +42,8 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = velocity;
     }
 
-    private void CursorToggling()
-    {
-        if (Input.GetMouseButtonDown(0))
-        {
-            SetMouseLook(true);
-        }
-
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SetMouseLook(false);
-        }
-    }
-
-    private void MouseLook()
-    {
-        if (!mouseLookEnabled) return;
+    private void MouseLook() {
+        if (MOVEMENT_DISABLED) return;
 
         mouseInput.x += Input.GetAxis("Mouse X") * sensitivity;
         mouseInput.y -= Input.GetAxis("Mouse Y") * sensitivity;
@@ -72,33 +54,14 @@ public class PlayerMovement : MonoBehaviour
         cameraRoot.localEulerAngles = Vector3.right * mouseInput.y;
     }
 
-    private void SetMouseLook(bool enabled)
-    {
-        mouseLookEnabled = enabled;
-
-        if (enabled)
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-    }
-
-    private void JumpInput()
-    {
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
+    private void JumpInput() {
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
             isGrounded = false;
             velocity.y = jumpForce;
         }
     }
 
-    private void GroundCheck()
-    {
+    private void GroundCheck() {
         if (velocity.y > 0) return;
 
         Vector3 origin = transform.position;
@@ -107,17 +70,14 @@ public class PlayerMovement : MonoBehaviour
 
         // Cast multiple rays in a circle around the player
         int rayCount = 8;
-        for (int i = 0; i < rayCount; i++)
-        {
+        for (int i = 0; i < rayCount; i++) {
             float angle = (360f / rayCount) * i;
             Vector3 rayOrigin = origin + new Vector3(Mathf.Cos(angle * Mathf.Deg2Rad), groundCheckDistance, Mathf.Sin(angle * Mathf.Deg2Rad));
 
             RaycastHit hit;
-            if (Physics.Raycast(rayOrigin, Vector3.down, out hit, groundCheckDistance * 2, groundLayerMask, QueryTriggerInteraction.Ignore))
-            {
+            if (Physics.Raycast(rayOrigin, Vector3.down, out hit, groundCheckDistance * 2, groundLayerMask, QueryTriggerInteraction.Ignore)) {
                 isGrounded = true;
-                if (hit.point.y > highestGroundY)
-                {
+                if (hit.point.y > highestGroundY) {
                     highestGroundY = hit.point.y;
                 }
             }
@@ -126,27 +86,23 @@ public class PlayerMovement : MonoBehaviour
         // Additional center ray for more precise ground detection
         Vector3 centerRayOrigin = origin + Vector3.up * groundCheckDistance;
         RaycastHit centerHit;
-        if (Physics.Raycast(centerRayOrigin, Vector3.down, out centerHit, groundCheckDistance * 2, groundLayerMask, QueryTriggerInteraction.Ignore))
-        {
+        if (Physics.Raycast(centerRayOrigin, Vector3.down, out centerHit, groundCheckDistance * 2, groundLayerMask, QueryTriggerInteraction.Ignore)) {
             isGrounded = true;
-            if (centerHit.point.y > highestGroundY)
-            {
+            if (centerHit.point.y > highestGroundY) {
                 highestGroundY = centerHit.point.y;
             }
         }
 
         // Set player height to the highest grounded point found
-        if (isGrounded && highestGroundY > float.MinValue)
-        {
+        if (isGrounded && highestGroundY > float.MinValue) {
             Vector3 newPosition = transform.position;
             newPosition.y = highestGroundY;
             transform.position = newPosition;
         }
     }
 
-    private void Movement()
-    {
-        Vector2 keyboardInput = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+    private void Movement() {
+        Vector2 keyboardInput = MOVEMENT_DISABLED ? Vector2.zero : new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
         // Calculate movement direction
         Vector3 moveDirection = (transform.forward * keyboardInput.y + transform.right * keyboardInput.x).normalized;
@@ -160,12 +116,10 @@ public class PlayerMovement : MonoBehaviour
         velocity.z = horizontalVelocity.z;
 
         // Apply gravity
-        if (isGrounded)
-        {
+        if (isGrounded) {
             velocity.y = 0f;
         }
-        else
-        {
+        else {
             velocity.y += gravity * Time.fixedDeltaTime;
         }
     }

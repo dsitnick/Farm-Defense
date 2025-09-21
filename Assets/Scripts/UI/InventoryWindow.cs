@@ -2,14 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InventoryWindow : MonoBehaviour {
+public class InventoryWindow : MonoBehaviour, IMenu {
 
     public PlayerInventory playerInventory;
 
     public InventorySlot[] inventorySlots;
 
     int pageIndex = 0;
-    int requiredPages => Mathf.Max(1, Mathf.CeilToInt((float)playerInventory.inventoryItems.Count / (float)SLOTS_PER_PAGE));
+    int requiredPages => Mathf.Max(1, Mathf.CeilToInt((float)playerInventory.inventoryItems.Length / (float)SLOTS_PER_PAGE));
 
 
     const int SLOTS_PER_PAGE = 32;
@@ -36,7 +36,7 @@ public class InventoryWindow : MonoBehaviour {
 
     void UpdateSlots() {
         for (int i = 0; i < SLOTS_PER_PAGE; i++) {
-            if (i < playerInventory.inventoryItems.Count) {
+            if (i < playerInventory.inventoryItems.Length) {
                 inventorySlots[i].SetupSlot(playerInventory.inventoryItems[pageIndex * SLOTS_PER_PAGE + i]);
             }
             else {
@@ -45,6 +45,10 @@ public class InventoryWindow : MonoBehaviour {
 
         }
 
+    }
+
+    public void SetWindowActive(bool isActive) {
+        GetComponent<Canvas>().enabled = isActive;
     }
 
 }

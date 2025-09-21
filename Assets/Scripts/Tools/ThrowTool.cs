@@ -23,7 +23,6 @@ public class ThrowTool : Tool {
         if (Input.GetMouseButtonDown(0) && !isThrowing && playerTools.GetComponent<PlayerInventory>().HasItem(requiredItem)) {
 
             isThrowing = true;
-            playerTools.GetComponent<PlayerInventory>().RemoveItem(requiredItem);
             StartCoroutine(Throw());
         }
     }
@@ -41,6 +40,7 @@ public class ThrowTool : Tool {
 
         yield return new WaitForSeconds(endlag);
         isThrowing = false;
+        playerTools.GetComponent<PlayerInventory>().RemoveItem(requiredItem);
 
     }
 }

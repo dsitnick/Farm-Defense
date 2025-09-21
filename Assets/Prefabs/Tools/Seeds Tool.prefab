@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4771545305887219645}
   - component: {fileID: 4771545305887219644}
   m_Layer: 6
-  m_Name: Boom Berry Seeds Tool
+  m_Name: Seeds Tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,10 +44,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6bae591363496746be8b71cfd180550, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Seeds
-  plantData: {fileID: 11400000, guid: 9b5c1a9a7cbe8dc459ec981d95dbf368, type: 2}
-  requiredItem: {fileID: 11400000, guid: 01803329ba7b24644ab8071a49f89c29, type: 2}
-  interactionRadius: 2
-  maxRange: 5
+  plantData: {fileID: 0}
+  requiredItem: {fileID: 0}
+  interactionRadius: 0.5
+  maxRange: 3
   plantSiteLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 256

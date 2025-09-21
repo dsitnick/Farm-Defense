@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventoryItem
   sprite: {fileID: 21300000, guid: cfac8d09b689fc14789005126e72979a, type: 3}
   sellPrice: 30
-  toolPrefab: {fileID: 9144874116164647508, guid: a61449feab978274394d5e04c50bc53f, type: 3}
+  toolPrefab: {fileID: 4397312360334119527, guid: 5b1a0aeab9d1bf746b941929d3a53c0b, type: 3}

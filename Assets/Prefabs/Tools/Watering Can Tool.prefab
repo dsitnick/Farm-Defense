@@ -128,11 +128,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2b8f48322fc6f438416f8a80ccfd53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WateringCan
-  interactionRadius: 2
-  maxRange: 5
+  interactionRadius: 1
+  maxRange: 3
   plantSiteLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 256
   waterDelay: 0.3
   waterDuration: 2
   onSetWaterActive:

@@ -1,28 +1,41 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.Events;
+using System;
 
 public class PlayerInventory : MonoBehaviour {
 
     [System.Serializable]
-    public class SlotItem {
+    public struct SlotItem {
         public InventoryItem item;
         public int count;
-        public int toolSlot = 0;
     }
 
-    [Header("Inventory Settings")]
-    public List<SlotItem> inventoryItems = new();
+    public SlotItem[] inventoryItems = new SlotItem[INVENTORY_SIZE];
 
     public UnityEvent onUpdateInventory;
 
+    public const int INVENTORY_SIZE = 32;
+    public const int NUM_TOOLS = 8;
+
+    private PlayerTools playerTools;
+
+    void Awake() {
+        playerTools = GetComponent<PlayerTools>();
+    }
+
     void Start() {
-        foreach (SlotItem item in inventoryItems) {
-            if (item.toolSlot > 0) {
-                SetItemToolSlot(item.item, item.toolSlot);
-            }
+        for (int i = 0; i < NUM_TOOLS; i++) {
+            UpdateToolAt(i);
         }
+
         onUpdateInventory.Invoke();
+    }
+
+    void OnValidate() {
+        if (inventoryItems.Length != INVENTORY_SIZE) {
+            Array.Resize(ref inventoryItems, INVENTORY_SIZE);
+        }
     }
 
     public void AddItem(InventoryItem item, int count = 1) {
@@ -30,10 +43,14 @@ public class PlayerInventory : MonoBehaviour {
 
         int slotIndex = GetSlotIndex(item);
         if (slotIndex < 0) {
-            inventoryItems.Add(new SlotItem { item = item, count = count });
-            int toolSlot = GetComponent<PlayerTools>().GetAvailableSlot() + 1;
-            if (toolSlot > 0) {
-                SetItemToolSlot(item, toolSlot);
+            slotIndex = GetFirstEmptySlot();
+
+            if (slotIndex < 0) return;// Inventory is full
+
+            inventoryItems[slotIndex] = new SlotItem { item = item, count = count };
+
+            if (slotIndex < NUM_TOOLS) {
+                UpdateToolAt(slotIndex);
             }
         }
         else {
@@ -41,6 +58,33 @@ public class PlayerInventory : MonoBehaviour {
         }
 
         onUpdateInventory.Invoke();
+    }
+
+    public void RemoveItem(InventoryItem item, int count = 1) {
+        if (item == null) return;
+
+        int slotIndex = GetSlotIndex(item);
+        if (slotIndex < 0) return;
+
+        inventoryItems[slotIndex].count -= count;
+        if (inventoryItems[slotIndex].count <= 0) {
+            inventoryItems[slotIndex] = default;
+
+            UpdateToolAt(slotIndex);
+        }
+
+        onUpdateInventory.Invoke();
+    }
+
+    public void SwapSlots(int slotA, int slotB) {
+        SlotItem itemA = inventoryItems[slotA];
+        SlotItem itemB = inventoryItems[slotB];
+
+        inventoryItems[slotA] = itemB;
+        inventoryItems[slotB] = itemA;
+
+        if (slotA < NUM_TOOLS) UpdateToolAt(slotA);
+        if (slotB < NUM_TOOLS) UpdateToolAt(slotB);
     }
 
     public int GetItemCount(InventoryItem item) {
@@ -56,36 +100,20 @@ public class PlayerInventory : MonoBehaviour {
         return GetItemCount(item) >= count;
     }
 
-    public void RemoveItem(InventoryItem item, int count = 1) {
-        if (item == null) return;
-
-        int slotIndex = GetSlotIndex(item);
-        if (slotIndex < 0) return;
-
-        inventoryItems[slotIndex].count -= count;
-        if (inventoryItems[slotIndex].count <= 0) {
-            inventoryItems.RemoveAt(slotIndex);
-        }
-
-        onUpdateInventory.Invoke();
-    }
-
-    public void SetItemToolSlot(InventoryItem item, int toolSlot) {
-        if (item == null) return;
-
-        int slotIndex = GetSlotIndex(item);
-        if (slotIndex < 0) return;
-
-        inventoryItems[slotIndex].toolSlot = toolSlot;
-        GetComponent<PlayerTools>().SetTool(toolSlot, item.toolPrefab);
-
-        onUpdateInventory.Invoke();
-
+    private void UpdateToolAt(int toolIndex) {
+        playerTools.SetTool(toolIndex, inventoryItems[toolIndex].item?.toolPrefab);
     }
 
     private int GetSlotIndex(InventoryItem item) {
-        for (int i = 0; i < inventoryItems.Count; i++) {
+        for (int i = 0; i < inventoryItems.Length; i++) {
             if (inventoryItems[i].item == item) return i;
+        }
+        return -1;
+    }
+
+    private int GetFirstEmptySlot() {
+        for (int i = 0; i < INVENTORY_SIZE; i++) {
+            if (inventoryItems[i].item == null) return i;
         }
         return -1;
     }

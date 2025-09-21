@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &5299063324435232064
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4771545305887219644, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: plantData
+      value: 
+      objectReference: {fileID: 11400000, guid: 9b5c1a9a7cbe8dc459ec981d95dbf368, type: 2}
+    - target: {fileID: 4771545305887219644, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: requiredItem
+      value: 
+      objectReference: {fileID: 11400000, guid: 01803329ba7b24644ab8071a49f89c29, type: 2}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219645, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4771545305887219646, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}
+      propertyPath: m_Name
+      value: Boom Berry Seeds Tool
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3195f901347f9594bbe8958557c1d0b0, type: 3}

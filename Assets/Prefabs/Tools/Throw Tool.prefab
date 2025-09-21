@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 9144874116164647498}
   - component: {fileID: 9144874116164647509}
   m_Layer: 0
-  m_Name: Boom Berry Throw Tool
+  m_Name: Throw Tool
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a710ec3f5ab39014fb199de90e7874e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  prefab: {fileID: 2075726575706489896, guid: 512a6b5ddd7337c4ab0528f6b7a1b2b8, type: 3}
-  requiredItem: {fileID: 11400000, guid: b2b28d2633a464143862557f3b5dd2b5, type: 2}
+  prefab: {fileID: 0}
+  requiredItem: {fileID: 0}
   delay: 0.2
   endlag: 0.8
